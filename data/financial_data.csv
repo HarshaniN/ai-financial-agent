@@ -1,0 +1,16 @@
+invoice_id,vendor_name,invoice_date,amount,tax_amount,category,payment_status
+INV-1001,Alpha Energy,2025-01-05,1200,96,Utilities,Paid
+INV-1002,Beta Logistics,2025-01-07,850,68,Transport,Paid
+INV-1003,Alpha Energy,2025-01-12,1300,104,Utilities,Paid
+INV-1004,Gamma Office Supplies,2025-01-15,420,33.6,Office,Paid
+INV-1005,Delta Consulting,2025-01-18,5000,400,Consulting,Pending
+INV-1006,Alpha Energy,2025-02-03,1280,102.4,Utilities,Paid
+INV-1007,Beta Logistics,2025-02-06,910,72.8,Transport,Paid
+INV-1008,Gamma Office Supplies,2025-02-11,450,36,Office,Paid
+INV-1009,Delta Consulting,2025-02-16,5200,416,Consulting,Paid
+INV-1010,Omega Systems,2025-02-20,15000,1200,Software,Pending
+INV-1011,Alpha Energy,2025-03-02,1275,102,Utilities,Paid
+INV-1012,Beta Logistics,2025-03-05,870,69.6,Transport,Paid
+INV-1013,Gamma Office Supplies,2025-03-11,460,36.8,Office,Paid
+INV-1014,Delta Consulting,2025-03-14,5100,408,Consulting,Paid
+INV-1015,Omega Systems,2025-03-18,40000,3200,Software,Pending

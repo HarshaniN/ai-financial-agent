@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from app.data_loader import load_financial_data
 from app.anomaly_detector import detect_amount_anomalies
+from app.query_router import handle_financial_query
+from app.schemas import QueryRequest
 
 app = FastAPI(title="AI Financial Agent")
 
@@ -26,3 +28,8 @@ def get_anomalies():
     df = load_financial_data()
     anomalies = detect_amount_anomalies(df)
     return {"anomalies": anomalies}
+
+
+@app.post("/query")
+def query_financial_data(request: QueryRequest):
+    return handle_financial_query(request.question)

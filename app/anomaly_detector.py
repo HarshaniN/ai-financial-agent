@@ -1,5 +1,6 @@
 from typing import List, Dict
 import pandas as pd
+from app.llm_service import explain_anomaly
 
 
 def detect_amount_anomalies(df: pd.DataFrame) -> List[Dict]:
@@ -13,4 +14,9 @@ def detect_amount_anomalies(df: pd.DataFrame) -> List[Dict]:
         "Invoice amount is significantly higher than historical average"
     )
 
-    return anomalies.to_dict(orient="records")
+    results = anomalies.to_dict(orient="records")
+
+    for anomaly in results:
+        anomaly["llm_explanation"] = explain_anomaly(anomaly)
+
+    return results

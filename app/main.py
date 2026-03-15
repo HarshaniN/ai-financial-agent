@@ -1,8 +1,8 @@
 from fastapi import FastAPI
-from app.data_loader import load_financial_data
+from app.data_loader import load_financial_data, set_active_data_path
 from app.anomaly_detector import detect_amount_anomalies
-from app.query_router import handle_financial_query
-from app.schemas import QueryRequest
+from app.schemas import QueryRequest, DatasetPathRequest
+from app.agent import run_financial_agent
 
 app = FastAPI(title="AI Financial Agent")
 
@@ -32,4 +32,26 @@ def get_anomalies():
 
 @app.post("/query")
 def query_financial_data(request: QueryRequest):
-    return handle_financial_query(request.question)
+    return run_financial_agent(request.question)
+
+
+@app.post("/set-dataset")
+def set_dataset(request: DatasetPathRequest):
+    set_active_data_path(request.file_path)
+    return {"message": "Dataset updated successfully", "file_path": request.file_path}
+
+
+@app.post("/reset-dataset")
+def reset_dataset():
+    from app.data_loader import reset_active_data_path
+    reset_active_data_path()
+    return {"message": "Dataset reset to default sample file"}
+
+@app.get("/active-dataset")
+def active_dataset():
+    from app.data_loader import get_active_data_path
+    path = get_active_data_path()
+    return {
+        "file_name": path.name,
+        "file_path": str(path.resolve())
+    }

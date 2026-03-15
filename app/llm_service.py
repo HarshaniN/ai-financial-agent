@@ -1,10 +1,24 @@
 import json
+import re
 import ollama
+
+
+def extract_json_object(text: str) -> dict:
+    match = re.search(r"\{.*\}", text, re.DOTALL)
+    if not match:
+        return {"intent": "unknown"}
+
+    json_text = match.group(0)
+
+    try:
+        return json.loads(json_text)
+    except json.JSONDecodeError:
+        return {"intent": "unknown"}
 
 
 def classify_financial_query(question: str) -> dict:
     prompt = f"""
-Classify this financial analysis request.
+You are classifying financial analysis requests.
 
 Possible intents:
 - detect_anomalies
@@ -12,7 +26,10 @@ Possible intents:
 - health_check
 - unknown
 
-Return valid JSON only in this format:
+Return ONLY valid JSON.
+Do not include explanations.
+Do not include markdown.
+Use exactly this format:
 {{"intent": "detect_anomalies"}}
 
 User question: {question}
@@ -24,11 +41,15 @@ User question: {question}
     )
 
     text = response["message"]["content"].strip()
+    parsed = extract_json_object(text)
 
-    try:
-        return json.loads(text)
-    except json.JSONDecodeError:
+    intent = parsed.get("intent", "unknown")
+    allowed_intents = {"detect_anomalies", "list_invoices", "health_check", "unknown"}
+
+    if intent not in allowed_intents:
         return {"intent": "unknown"}
+
+    return {"intent": intent}
 
 
 def explain_anomaly(anomaly: dict) -> str:
